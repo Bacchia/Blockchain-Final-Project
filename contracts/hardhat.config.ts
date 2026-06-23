@@ -4,7 +4,8 @@ import * as dotenv from "dotenv";
 
 dotenv.config();
 
-const { SEPOLIA_RPC_URL, DEPLOYER_PRIVATE_KEY, ETHERSCAN_API_KEY } = process.env;
+const { ARC_TESTNET_RPC_URL, DEPLOYER_PRIVATE_KEY, ETHERSCAN_API_KEY } = process.env;
+const accounts = DEPLOYER_PRIVATE_KEY ? [DEPLOYER_PRIVATE_KEY] : [];
 
 const config: HardhatUserConfig = {
   solidity: {
@@ -12,9 +13,10 @@ const config: HardhatUserConfig = {
     settings: { optimizer: { enabled: true, runs: 200 } },
   },
   networks: {
-    sepolia: {
-      url: SEPOLIA_RPC_URL ?? "",
-      accounts: DEPLOYER_PRIVATE_KEY ? [DEPLOYER_PRIVATE_KEY] : [],
+    arcTestnet: {
+      url: ARC_TESTNET_RPC_URL ?? "https://rpc.testnet.arc.network",
+      chainId: 5042002,
+      accounts,
     },
   },
   etherscan: {
