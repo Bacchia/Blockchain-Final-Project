@@ -49,6 +49,18 @@ body {
   line-height: 1.5;
 }
 
+.demo-banner {
+  max-width: 620px;
+  margin: 0 auto 16px;
+  padding: 10px 14px;
+  border: 1px solid rgba(245, 200, 66, 0.4);
+  background: rgba(245, 200, 66, 0.08);
+  border-radius: 10px;
+  color: #f5c842;
+  font-size: 0.85rem;
+  line-height: 1.45;
+}
+
 .wallet {
   margin-top: 8px;
 }
@@ -147,6 +159,95 @@ button:disabled {
 
 .actions {
   margin-top: 8px;
+}
+
+.candidate-votes {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  margin-left: 8px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.tally {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.tally-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 10px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.tally-total {
+  font-variant-numeric: tabular-nums;
+}
+
+.tally-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 6px 0;
+  font-size: 0.85rem;
+}
+
+.tally-name {
+  flex: 0 0 38%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tally-lead {
+  color: var(--accent-2);
+}
+
+.tally-bar {
+  flex: 1;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.tally-fill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--accent-2);
+  transition: width 0.4s ease;
+}
+
+.tally-count {
+  flex: 0 0 auto;
+  font-variant-numeric: tabular-nums;
+}
+
+.tally-refresh {
+  margin-top: 12px;
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.tally-refresh:hover:not(:disabled) {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.35);
 }
 
 .status {

@@ -3,6 +3,7 @@
     "target": "es2021",
     "module": "nodenext",
     "moduleResolution": "nodenext",
+    "rootDir": ".",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,

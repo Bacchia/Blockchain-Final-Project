@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
-import { CANDIDATES, EXPLORER_BASE, type Candidate } from './lib/config';
+import { DEMO_MODE, EXPLORER_BASE, type Candidate } from './lib/config';
+import { loadCandidates, type CandidateWithVotes } from './lib/election';
 import {
   castVote,
   getSigner,
@@ -25,11 +26,33 @@ export default function App() {
   const [busy, setBusy] = useState(false);
   const [status, setStatus] = useState('');
   const [error, setError] = useState('');
+  const [candidates, setCandidates] = useState<CandidateWithVotes[]>([]);
+
+  async function refreshCandidates() {
+    try {
+      const list = await loadCandidates();
+      if (list.length) setCandidates(list);
+    } catch {
+      // keep existing list on error
+    }
+  }
+
+  useEffect(() => {
+    loadCandidates()
+      .then((list) => { if (list.length) setCandidates(list); })
+      .catch(() => {});
+  }, []);
+
+  const winner = candidates.reduce(
+    (top, c) => (c.votes > top.votes ? c : top),
+    candidates[0] ?? { votes: 0, name: '' },
+  );
+  const totalVotes = candidates.reduce((sum, c) => sum + c.votes, 0);
 
   async function handleConnect() {
     setError('');
     setBusy(true);
-    setStatus('Connecting wallet & deriving shielded keys...');
+    setStatus('Connecting wallet...');
     try {
       const signer = await getSigner();
       setAddress(await signer.getAddress());
@@ -74,6 +97,7 @@ export default function App() {
       setReceipt(r);
       setPhase('voted');
       setStatus('Vote confirmed on-chain.');
+      await refreshCandidates();
     } catch (e) {
       setError((e as Error).message);
     } finally {
@@ -89,6 +113,13 @@ export default function App() {
           Anonymous, verifiable voting on a public chain — powered by the Hinkal
           shielded pool. Nobody can link a voter to their choice.
         </p>
+        {DEMO_MODE && (
+          <p className="demo-banner">
+            Demo mode — the shielding step is simulated (Hinkal's privacy layer
+            is gated by a one-time KYC access token). The vote is still a real
+            on-chain transfer, so the tally is real and verifiable.
+          </p>
+        )}
         <div className="wallet">
           {address ? (
             <span className="pill">{shortAddr(address)}</span>
@@ -116,7 +147,7 @@ export default function App() {
           <div className="field">
             <span>Candidate</span>
             <div className="candidates">
-              {CANDIDATES.map((c) => (
+              {candidates.map((c) => (
                 <button
                   key={c.id}
                   className={`candidate ${selected?.id === c.id ? 'active' : ''}`}
@@ -124,6 +155,7 @@ export default function App() {
                   disabled={phase === 'voted'}
                 >
                   {c.name}
+                  <span className="candidate-votes">{c.votes}</span>
                 </button>
               ))}
             </div>
@@ -183,9 +215,39 @@ export default function App() {
           />
 
           <div className="note">
-            The chain stores a ZK proof + commitment — never "{voterName} →{' '}
-            {selected?.name ?? 'candidate'}". Open the transaction to verify the
-            sender is not revealed.
+            {DEMO_MODE
+              ? `Demo: the vote is a real on-chain BALLOT transfer (verifiable tally), but the shielded-pool privacy is simulated here. In production, Hinkal's shielded withdraw hides the "${voterName} → ${selected?.name ?? 'candidate'}" link behind a ZK proof + commitment.`
+              : `The chain stores a ZK proof + commitment — never "${voterName} → ${selected?.name ?? 'candidate'}". Open the transaction to verify the sender is not revealed.`}
+          </div>
+
+          <div className="tally">
+            <div className="tally-head">
+              <span>Live tally (on-chain)</span>
+              <span className="tally-total">{totalVotes} vote(s)</span>
+            </div>
+            {candidates.map((c) => {
+              const pct = totalVotes ? (c.votes / totalVotes) * 100 : 0;
+              const leading = totalVotes > 0 && c.votes === winner.votes;
+              return (
+                <div className="tally-row" key={c.id}>
+                  <span className="tally-name">
+                    {c.name}
+                    {leading && <span className="tally-lead"> · leading</span>}
+                  </span>
+                  <span className="tally-bar">
+                    <span className="tally-fill" style={{ width: `${pct}%` }} />
+                  </span>
+                  <span className="tally-count">{c.votes}</span>
+                </div>
+              );
+            })}
+            <button
+              className="tally-refresh"
+              onClick={refreshCandidates}
+              disabled={busy}
+            >
+              Refresh tally
+            </button>
           </div>
         </section>
       </main>

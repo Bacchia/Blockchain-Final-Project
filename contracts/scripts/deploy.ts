@@ -5,12 +5,12 @@ async function main() {
   console.log("Deployer:", deployer.address);
 
   const candidates = [
-    { name: "Candidate A", address: process.env.CANDIDATE_A ?? deployer.address },
-    { name: "Candidate B", address: process.env.CANDIDATE_B ?? deployer.address },
-    { name: "Candidate C", address: process.env.CANDIDATE_C ?? deployer.address },
+    { name: "Candidate A", address: process.env.CANDIDATE_A || deployer.address },
+    { name: "Candidate B", address: process.env.CANDIDATE_B || deployer.address },
+    { name: "Candidate C", address: process.env.CANDIDATE_C || deployer.address },
   ];
 
-  const voters = (process.env.VOTERS ?? deployer.address)
+  const voters = (process.env.VOTERS || deployer.address)
     .split(",")
     .map((a) => a.trim())
     .filter(Boolean);
