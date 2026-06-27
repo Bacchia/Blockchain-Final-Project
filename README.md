@@ -61,8 +61,8 @@ Deployed on **Arc Testnet** (chainId `5042002`) — the only testnet where Hinka
 
 | Contract | Address |
 |---|---|
-| BallotToken | `0xDD7524D3fa066Eb1683F4279E829F2A14799e0EE` |
-| Election | `0xb49ED152C58D2e782f4BA217AB64644432AD2279` |
+| BallotToken | `0x39298b3D75bdA16F1D4549A4eccce7d10C4f1829` |
+| Election | `0x228322f50AA0215C57EcFEDe34ed9CC16f06321b` |
 
 Explorer: [testnet.arcscan.app](https://testnet.arcscan.app)
 

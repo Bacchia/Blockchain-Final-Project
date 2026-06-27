@@ -2,7 +2,7 @@ import { ethers } from "hardhat";
 
 async function main() {
   const electionAddr =
-    process.env.ELECTION_ADDRESS ?? "0xb49ED152C58D2e782f4BA217AB64644432AD2279";
+    process.env.ELECTION_ADDRESS ?? "0x228322f50AA0215C57EcFEDe34ed9CC16f06321b";
   const candidate = process.env.NEW_CANDIDATE;
   const name = process.env.NEW_CANDIDATE_NAME ?? "New Candidate";
 

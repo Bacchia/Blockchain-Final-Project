@@ -1,6 +1,6 @@
 const { ethers } = require('ethers');
 
-const ELECTION = '0xb49ED152C58D2e782f4BA217AB64644432AD2279';
+const ELECTION = '0x228322f50AA0215C57EcFEDe34ed9CC16f06321b';
 
 async function main() {
   const provider = new ethers.JsonRpcProvider(

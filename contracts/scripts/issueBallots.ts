@@ -2,7 +2,7 @@ import { ethers } from "hardhat";
 
 async function main() {
   const tokenAddr =
-    process.env.BALLOT_TOKEN_ADDRESS ?? "0xDD7524D3fa066Eb1683F4279E829F2A14799e0EE";
+    process.env.BALLOT_TOKEN_ADDRESS ?? "0x39298b3D75bdA16F1D4549A4eccce7d10C4f1829";
 
   const voters = (process.env.NEW_VOTERS ?? "")
     .split(",")
